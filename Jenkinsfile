@@ -12,8 +12,9 @@ pipeline {
     stages {
         stage("Run database"){
             steps{
-                sh "docker run -d --name my-postgres -e POSTGRES_PASSWORD=secret -p 5433:5432 -d postgres"
-                sh "docker run -d ${env.ARTIFACT_ID}:latest -p 80:8080"
+                sh "docker network create praxis-net"
+                sh "docker run --net praxis-net -d --name my-postgres -e POSTGRES_PASSWORD=secret -p 5433:5432 -d postgres"
+                sh "docker run --net praxis-net -d ${env.ARTIFACT_ID}:latest -p 80:8080"
             }
         }
 
