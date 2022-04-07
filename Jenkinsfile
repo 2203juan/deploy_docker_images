@@ -13,7 +13,7 @@ pipeline {
         stage("Run database"){
             steps{
                 sh "docker run -d --name my-postgres -e POSTGRES_PASSWORD=secret -p 5433:5432 -d postgres"
-                sh "docker run -d ${env.ARTIFACT_ID}:latest -p 8080:8080"
+                sh "docker run -d ${env.ARTIFACT_ID}:latest -p 80:8080"
             }
         }
 
