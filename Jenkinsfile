@@ -18,7 +18,7 @@ pipeline {
 
         stage("Run backend"){
             steps{
-                sh "docker run -p 80:8080  -e DB_HOST=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' my-postgres) --name backend_cnt -d ${env.ARTIFACT_ID}:latest"
+                sh "docker run -p 80:8080  -e DB_HOST=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' my-postgres) --name backend_cnt -d ${ARTIFACT_ID}:latest"
             }
         }
         // stage('Run UI Tests') {
