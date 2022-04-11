@@ -12,12 +12,16 @@ pipeline {
     stages {
         stage("Run database"){
             steps{
-                sh "docker network create praxis-net"
-                sh "docker run --net praxis-net -d --name my-postgres -e POSTGRES_PASSWORD=secret -p 5433:5432 -d postgres"
-                sh "docker run --net praxis-net -d ${env.ARTIFACT_ID}:latest -p 80:8080"
+                sh "docker run --name my-postgres -e POSTGRES_PASSWORD=secret -p 5432:5432 -d postgres"
             }
         }
 
+        stage("Run backend"){
+            steps{
+                sh ""
+                sh "docker run -p 80:8080  -e DB_HOST=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' my-postgres) --name backend_cnt -d ${env.ARTIFACT_ID}:latest"
+            }
+        }
         // stage('Run UI Tests') {
         //     steps {
         //         sh "docker run -p 3030:3030 ${env.ARTIFACT_ID} npm test"
